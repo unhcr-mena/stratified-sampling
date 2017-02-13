@@ -1,5 +1,3 @@
-
-
 ## This script allows to generate stratified samples using proportional allocation
 
 
@@ -17,36 +15,19 @@ library(sampling)
 
 
 #############################################################
-## STEP 2: Generate the variables and the dataset
+## STEP 2: Insert your configuration for the sample
 #############################################################
-# PS: note that you can skip that step if you have already your dataset
 
 #Confirm the the population size called here N
 ## This is the total number of people in the group you are trying to reach with the survey. 
-N <- 3000000
-
-## generate randome variables for the test dataset
-size <- sample(x=c(1,2,3,4,5), size=N, replace=TRUE, prob=c(.3,.4,.2,.07,.03))
-return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.7,.3))
-sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
-region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
-needs <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.45,.55))
-
-## Bind all variable to get our test dataset
-data <- data.frame(size, return, sex, region, needs)
-rm(size, return, sex, region, needs)
-
-#############################################################
-## STEP 3: Insert your configuration for the sample
-#############################################################
-
-
+N <- 30000
 
 #  Decide on the confidence level
 #  It represents the probability of the same result if you re-sampled, all other things equal.
 # A measure of how certain you are that your sample accurately reflects the population, within its margin of error.
 ## Common standards used by researchers are 90%, 95%, and 99%.
-z <- 1.95
+cl <- 0.95
+z <- abs(qt((1-cl)/2, (N-1)))
 
 # Decide on the margin of error - Precision  
 # This percentage describes the variability of the estimate: how closely the answer your sample gave is
@@ -66,6 +47,25 @@ e <- 0.05
 #### within a prescribed range for a given population (for instance expenditure per case)
 p <- 0.5
 q <- 1-p
+
+
+#############################################################
+## STEP 3: Generate the variables and the dataset
+#############################################################
+# PS: note that you can skip that step if you have already your dataset
+
+## generate randome variables for the test dataset
+size <- sample(x=c(1,2,3,4,5), size=N, replace=TRUE, prob=c(.3,.4,.2,.07,.03))
+return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.7,p))
+sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
+region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
+needs <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.45,.55))
+
+## Bind all variable to get our test dataset
+data <- data.frame(size, return, sex, region, needs)
+rm(size, return, sex, region, needs)
+
+
 
 #############################################################
 ## STEP 4: Calculate the sample size
@@ -96,9 +96,9 @@ max(st@nr)
 #compute the sample sizes of the strata using proportional allocation: nh = Nh/N*n for each strata h
 n_size <- numeric(max(st@nr))
 for (h in 1:max(st@nr)){
-    n_size[h] <- st@size[h]/N*n
-    n_size[h] <- round(n_size[h], digits = 0)
-  }
+  n_size[h] <- st@size[h]/N*n
+  n_size[h] <- round(n_size[h], digits = 0)
+}
 print(n_size)
 
 #use a simple random or systematic sample to select your sample
@@ -112,7 +112,6 @@ write.csv(data_sampled, "data_sampled.csv")
 #check if the the sample is good by checkin if the proportion of the attribute in the sample
 # is close to its population's counterpart
 summary(data_sampled$return)
-
 
 
 
