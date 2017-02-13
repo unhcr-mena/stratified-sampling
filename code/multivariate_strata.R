@@ -60,10 +60,11 @@ return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(q,p))
 sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
 region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
 needs <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.45,.55))
+phone <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.2,.8))
 
 ## Bind all variable to get our test dataset
-data <- data.frame(size, return, sex, region, needs)
-rm(size, return, sex, region, needs)
+data <- data.frame(size, return, sex, region, needs, phone)
+rm(size, return, sex, region, needs, phone)
 
 
 
