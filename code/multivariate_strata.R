@@ -20,6 +20,7 @@ library(sampling)
 # PS: note that you can skip that step if you have already your dataset
 
 #Confirm the the population size called here N
+## This is the total number of people in the group you are trying to reach with the survey. 
 N <- 3000000
 
 ## generate randome variables for the test dataset
@@ -40,11 +41,15 @@ rm(size, return, sex, region, needs)
 
 
 #  Decide  the confidence level
-#  It represents the probability of the same result if you re-sampled, all other things equal. 
-## Common values are 90%,  95% or 99%
+#  It represents the probability of the same result if you re-sampled, all other things equal.
+# A measure of how certain you are that your sample accurately reflects the population, within its margin of error.
+## Common standards used by researchers are 90%, 95%, and 99%.
 z <- 1.95
 
 # Decide on the margin of error - Precision is the variability of the estimate. 
+# A percentage that describes how closely the answer your sample gave is to the “true value” is in your population. 
+# The smaller the margin of error is, the closer you are to having the exact answer at a given confidence level.
+# A smaller margin of error means that you must have a larger sample size given the same population.
 ## A common value is: ± 5%)
 e <- 0.05
 
