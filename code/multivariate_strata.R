@@ -56,7 +56,7 @@ q <- 1-p
 
 ## generate randome variables for the test dataset
 size <- sample(x=c(1,2,3,4,5), size=N, replace=TRUE, prob=c(.3,.4,.2,.07,.03))
-return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(q,p))
+return <- sample(x=c("No","Yes","Uknown"), size=N, replace=TRUE, prob=c(0.4,p,0.1))
 sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
 region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
 needs <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.45,.55))
@@ -112,8 +112,10 @@ write.csv(data_sampled, "data_sampled.csv")
 
 #check if the the sample is good by checkin if the proportion of the attribute in the sample
 # is close to its population's counterpart
-summary(data_sampled$return)
-
+freq <- table(data_sampled$return)['Yes']
+print(freq)
+relfreq <- freq / NROW(data_sampled$return)
+print(relfreq)
 
 
 
