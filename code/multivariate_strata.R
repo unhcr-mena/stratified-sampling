@@ -56,7 +56,7 @@ e <- 0.05
 
 #### Mean is the expected value of a variable of interest that is typically continuous 
 #### within a prescribed range for a given population (for instance expenditure per case)
-p <- 0.3
+p <- 0.5
 q <- 1-p
 
 #########################################################
