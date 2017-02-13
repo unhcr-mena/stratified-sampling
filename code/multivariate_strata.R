@@ -113,7 +113,6 @@ write.csv(data_sampled, "data_sampled.csv")
 #check if the the sample is good by checkin if the proportion of the attribute in the sample
 # is close to its population's counterpart
 freq <- table(data_sampled$return)['Yes']
-print(freq)
 relfreq <- freq / NROW(data_sampled$return)
 print(relfreq)
 
