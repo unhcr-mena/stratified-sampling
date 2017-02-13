@@ -56,7 +56,7 @@ q <- 1-p
 
 ## generate randome variables for the test dataset
 size <- sample(x=c(1,2,3,4,5), size=N, replace=TRUE, prob=c(.3,.4,.2,.07,.03))
-return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.7,p))
+return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(q,p))
 sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
 region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
 needs <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.45,.55))
