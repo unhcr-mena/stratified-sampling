@@ -1,1 +1,1 @@
-# stratified-sampling
+# Tutorial to generate a stratified sample
