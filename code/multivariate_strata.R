@@ -64,8 +64,6 @@ phone <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.2,.8))
 
 ## Bind all variable to get our test dataset
 data <- data.frame(size, return, sex, region, needs, phone)
-rm(size, return, sex, region, needs, phone)
-
 
 
 #############################################################
@@ -89,7 +87,9 @@ n <- round(n, digits = 0)
 #############################################################
 
 # We build the 'Strata' object
-st <- stratify(data, c("size", "needs"))
+# first we subset the dataset in order to have only observations with a phone
+data_with_phone <- data[ which(data$phone==1), ]
+st <- stratify(data_with_phone, c("size", "needs"))
 #summary(st)
 str(st)
 max(st@nr)
@@ -103,10 +103,10 @@ for (h in 1:max(st@nr)){
 print(n_size)
 
 #use a simple random or systematic sample to select your sample
-data[order(data$size,data$needs),]
-stratified_sample <- strata(data, c("size", "needs"), c(n_size), method=("srswor"), pik,description=FALSE)
+data_with_phone[order(data_with_phone$size, data_with_phone$needs),]
+stratified_sample <- strata(data_with_phone, c("size", "needs"), c(n_size), method=("srswor"), pik,description=FALSE)
 summary(stratified_sample)
-data_sampled <- getdata(data, stratified_sample)
+data_sampled <- getdata(data_with_phone, stratified_sample)
 #print(data_sampled)
 write.csv(data_sampled, "data_sampled.csv")
 
@@ -115,10 +115,3 @@ write.csv(data_sampled, "data_sampled.csv")
 freq <- table(data_sampled$return)['Yes']
 relfreq <- freq / NROW(data_sampled$return)
 print(relfreq)
-
-
-
-
-
-
-
