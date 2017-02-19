@@ -6,6 +6,8 @@ output:
     toc: yes
 ---
 
+This is a reproducible example of a stratified sampling calculation. Full code can also be accessed [here](https://github.com/unhcr-mena/stratifiedsampling/blob/gh-pages/code/multivariate_strata.R)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(simFrame)

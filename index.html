@@ -144,6 +144,7 @@ $(document).ready(function () {
 </ul>
 </div>
 
+<p>This is a reproducible example of a stratified sampling calculation. Full code can also be accessed <a href="https://github.com/unhcr-mena/stratifiedsampling/blob/gh-pages/code/multivariate_strata.R">here</a></p>
 <div id="step-1-install-load-required-library" class="section level1">
 <h1>STEP 1: Install &amp; load Required Library</h1>
 <p><em>uncomment the first two lines at first utilisation</em></p>
@@ -231,24 +232,24 @@ st &lt;- stratify(data_with_phone, c(&quot;size&quot;, &quot;needs&quot;))
 #summary(st)
 str(st)</code></pre>
 <pre><code>## Formal class 'Strata' [package &quot;simFrame&quot;] with 7 slots
-##   ..@ values: int [1:239607] 6 10 2 1 6 8 7 10 2 3 ...
+##   ..@ values: int [1:239887] 6 7 1 6 2 8 6 7 7 1 ...
 ##   ..@ split :List of 10
-##   .. ..$ : int [1:32440] 4 15 29 35 38 40 48 51 52 60 ...
-##   .. ..$ : int [1:43426] 3 9 16 17 19 20 22 27 31 36 ...
-##   .. ..$ : int [1:21615] 10 11 23 33 34 45 50 58 63 96 ...
-##   .. ..$ : int [1:7732] 14 44 105 112 228 267 325 350 410 498 ...
-##   .. ..$ : int [1:3202] 86 221 382 422 449 526 630 738 763 902 ...
-##   .. ..$ : int [1:39218] 1 5 13 24 26 30 49 53 65 67 ...
-##   .. ..$ : int [1:52604] 7 18 21 25 41 42 47 54 57 70 ...
-##   .. ..$ : int [1:26304] 6 12 28 32 46 61 68 73 87 89 ...
-##   .. ..$ : int [1:9160] 80 84 94 123 142 165 166 181 232 233 ...
-##   .. ..$ : int [1:3906] 2 8 66 155 188 218 326 371 582 634 ...
+##   .. ..$ : int [1:32402] 3 10 12 15 36 37 46 54 58 59 ...
+##   .. ..$ : int [1:43158] 5 13 14 16 18 20 23 25 30 31 ...
+##   .. ..$ : int [1:21643] 17 19 34 57 65 71 74 107 130 152 ...
+##   .. ..$ : int [1:7583] 40 72 75 78 93 178 182 193 275 318 ...
+##   .. ..$ : int [1:3260] 32 44 99 230 423 430 474 529 547 578 ...
+##   .. ..$ : int [1:39480] 1 4 7 11 21 24 39 47 51 52 ...
+##   .. ..$ : int [1:52455] 2 8 9 22 27 35 38 41 61 62 ...
+##   .. ..$ : int [1:26836] 6 26 29 45 49 53 82 96 97 116 ...
+##   .. ..$ : int [1:9065] 28 83 108 126 136 145 148 154 171 190 ...
+##   .. ..$ : int [1:4005] 110 180 211 242 282 309 319 448 464 486 ...
 ##   ..@ design: chr [1:2] &quot;size&quot; &quot;needs&quot;
 ##   ..@ nr    : int [1:10] 1 2 3 4 5 6 7 8 9 10
 ##   ..@ legend:'data.frame':   10 obs. of  2 variables:
 ##   .. ..$ size : Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 2 3 4 5 1 2 3 4 5
 ##   .. ..$ needs: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 2 2 2 2 2
-##   ..@ size  : int [1:10] 32440 43426 21615 7732 3202 39218 52604 26304 9160 3906
+##   ..@ size  : int [1:10] 32402 43158 21643 7583 3260 39480 52455 26836 9065 4005
 ##   ..@ call  : language stratify(x = data_with_phone, design = c(&quot;size&quot;, &quot;needs&quot;))</code></pre>
 <pre class="r"><code>max(st@nr)</code></pre>
 <pre><code>## [1] 10</code></pre>
@@ -262,7 +263,7 @@ for (h in 1:max(st@nr)){
   n_size[h] &lt;- round(n_size[h], digits = 0)
 }
 print(n_size)</code></pre>
-<pre><code>##  [1] 42 56 28 10  4 50 67 34 12  5</code></pre>
+<pre><code>##  [1] 41 55 28 10  4 51 67 34 12  5</code></pre>
 </div>
 <div id="use-a-simple-random-or-systematic-sample-to-select-your-sample" class="section level2">
 <h2>Use a simple random or systematic sample to select your sample</h2>
@@ -272,19 +273,19 @@ stratified_sample &lt;- strata(data_with_phone, c(&quot;size&quot;, &quot;needs&
 
 summary(stratified_sample)</code></pre>
 <pre><code>##       size           needs           ID_unit            Prob          
-##  Min.   :1.000   Min.   :0.0000   Min.   :   495   Min.   :0.0001851  
-##  1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 58718   1st Qu.:0.0012947  
-##  Median :3.000   Median :1.0000   Median :196753   Median :0.0019009  
-##  Mean   :2.679   Mean   :0.5032   Mean   :145614   Mean   :0.0032735  
-##  3rd Qu.:4.000   3rd Qu.:1.0000   3rd Qu.:220001   3rd Qu.:0.0037477  
-##  Max.   :5.000   Max.   :1.0000   Max.   :238734   Max.   :0.0086653  
-##     Stratum     
-##  Min.   : 1.00  
-##  1st Qu.: 2.00  
-##  Median : 6.00  
-##  Mean   : 4.86  
-##  3rd Qu.: 7.00  
-##  Max.   :10.00</code></pre>
+##  Min.   :1.000   Min.   :0.0000   Min.   :   132   Min.   :0.0001848  
+##  1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 59499   1st Qu.:0.0012654  
+##  Median :3.000   Median :1.0000   Median :198664   Median :0.0019004  
+##  Mean   :2.691   Mean   :0.5049   Mean   :146888   Mean   :0.0033099  
+##  3rd Qu.:4.000   3rd Qu.:1.0000   3rd Qu.:220495   3rd Qu.:0.0037507  
+##  Max.   :5.000   Max.   :1.0000   Max.   :237622   Max.   :0.0088356  
+##     Stratum      
+##  Min.   : 1.000  
+##  1st Qu.: 2.000  
+##  Median : 6.000  
+##  Mean   : 4.886  
+##  3rd Qu.: 7.000  
+##  Max.   :10.000</code></pre>
 <pre class="r"><code>data_sampled &lt;- getdata(data_with_phone, stratified_sample)
 #print(data_sampled)
 write.csv(data_sampled, &quot;data_sampled.csv&quot;)</code></pre>
@@ -296,7 +297,7 @@ write.csv(data_sampled, &quot;data_sampled.csv&quot;)</code></pre>
 relfreq &lt;- freq / NROW(data_sampled$return)
 print(relfreq)</code></pre>
 <pre><code>##       Yes 
-## 0.5194805</code></pre>
+## 0.4527687</code></pre>
 </div>
 </div>
 
