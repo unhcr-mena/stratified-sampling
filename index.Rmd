@@ -1,0 +1,168 @@
+---
+title: "Stratified Sampling Tutorial"
+output: 
+  html_document: 
+    fig_caption: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(simFrame)
+library(sampling)
+
+```
+
+#  STEP 1: Install & load Required Library
+
+
+*uncomment the first two lines at first utilisation* 
+
+```{r}
+#install.packages("simFrame")
+#install.packages("sampling")
+
+library(simFrame)
+library(sampling)
+```
+
+
+# STEP 2: Insert your configuration for the sample
+
+## Confirm the the population size called here N.
+
+This is the total number of people in the group you are trying to reach with the survey. 
+
+Here we use **300,000**
+
+```{r}
+N <- 300000
+```
+
+## Decide on the confidence level
+It represents the probability of the same result if you re-sampled, all other things equal.
+A measure of how certain you are that your sample accurately reflects the population, within its margin of error.
+Common standards used by researchers are 90%, 95%, and 99%.
+
+Here we use **95%**
+
+```{r}
+cl <- 0.95
+z <- abs(qt((1-cl)/2, (N-1)))
+```
+
+## Decide on the margin of error - Precision  
+This percentage describes the variability of the estimate: how closely the answer your sample gave is to the “true value” is in your population. 
+
+The smaller the margin of error is, the closer you are to having the exact answer at a given confidence level. A smaller margin of error means that you must have a larger sample size given the same population. Common standards used by researchers are: ± 5%, ± 3% , ± 1%).
+
+Here we use **5%**
+
+```{r}
+e <- 0.05
+```
+
+## Fill the proportion of the attribute
+
+Estimate of the prevalence or mean & STDev of the key indicator (e.g. 30% return intention). 
+
+ * Prevalence is the total number of cases for a variable of interest that is typically binary within a population divided by its total population (for instance intention to return).  * Mean is the expected value of a variable of interest that is typically continuous  within a prescribed range for a given population (for instance expenditure per case).
+
+Here we use **50%**
+
+```{r}
+p <- 0.5
+q <- 1-p
+```
+
+
+# STEP 3: Generate the variables and the dataset
+
+PS: note that you can skip that step if you have already your dataset
+
+## Generate random variables for the test dataset
+```{r}
+size <- sample(x=c(1,2,3,4,5), size=N, replace=TRUE, prob=c(.3,.4,.2,.07,.03))
+return <- sample(x=c("No","Yes","Unknown"), size=N, replace=TRUE, prob=c(0.4,p,0.1))
+sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
+region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
+needs <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.45,.55))
+phone <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.2,.8))
+```
+
+## Bind all variable to get our test dataset
+```{r}
+data <- data.frame(size, return, sex, region, needs, phone)
+```
+
+
+# STEP 4: Calculate the sample size
+
+## Compute the sample size for a large population
+
+```{r}
+n0 <- (z^2)*p*q/(e^2)
+n0 <- round(n0, digits = 0)
+print(n0)
+```
+
+## Compute the sample size for a finite population
+
+```{r}
+N <- nrow(data)
+
+n <- n0/(1+((n0-1)/N))
+n <- round(n, digits = 0)
+print(n)
+```
+
+
+# STEP 5: Stratify the dataset using proportional allocation
+
+
+
+## Subset the dataset in order to have only observations with a phone
+
+```{r}
+data_with_phone <- data[ which(data$phone==1), ]
+st <- stratify(data_with_phone, c("size", "needs"))
+#summary(st)
+str(st)
+max(st@nr)
+```
+
+## Compute the sample sizes of the strata using proportional allocation:
+nh = Nh/N*n for each strata h
+
+```{r}
+n_size <- numeric(max(st@nr))
+for (h in 1:max(st@nr)){
+  n_size[h] <- st@size[h]/N*n
+  n_size[h] <- round(n_size[h], digits = 0)
+}
+print(n_size)
+```
+
+## Use a simple random or systematic sample to select your sample
+
+Use 'Strata' object
+```{r}
+data_with_phone <- data_with_phone[order(data_with_phone$size, data_with_phone$needs),]
+stratified_sample <- strata(data_with_phone, c("size", "needs"), c(n_size), method=("srswor"), pik,description=FALSE)
+
+summary(stratified_sample)
+
+data_sampled <- getdata(data_with_phone, stratified_sample)
+#print(data_sampled)
+write.csv(data_sampled, "data_sampled.csv")
+```
+
+## Check if the the sample is good 
+
+Verify if the proportion of the attribute in the sample is close to its population's counterpart
+```{r}
+freq <- table(data_sampled$return)['Yes']
+relfreq <- freq / NROW(data_sampled$return)
+print(relfreq)
+```
+
