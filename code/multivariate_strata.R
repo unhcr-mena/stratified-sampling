@@ -101,10 +101,10 @@ st <- stratify(data_with_phone, c("size", "needs"))
 str(st)
 max(st@nr)
 
-#compute the sample sizes of the strata using proportional allocation: nh = Nh/NROW(data_with_phone)*n for each strata h
+#compute the sample sizes of the strata using proportional allocation: nh = Nh/N*n for each strata h
 n_size <- numeric(max(st@nr))
 for (h in 1:max(st@nr)){
-  n_size[h] <- st@size[h]/NROW(data_with_phone)*n
+  n_size[h] <- st@size[h]/N*n
   n_size[h] <- round(n_size[h], digits = 0)
 }
 print(n_size)
