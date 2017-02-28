@@ -110,7 +110,7 @@ for (h in 1:max(st@nr)){
 print(n_size)
 
 #use a simple random or systematic sample to select your sample
-data_with_phone[order(data_with_phone$size, data_with_phone$needs),]
+data_with_phone <- data_with_phone[order(data_with_phone$size, data_with_phone$needs),]
 stratified_sample <- strata(data_with_phone, c("size", "needs"), size=c(n_size), method="srswor")
 summary(stratified_sample)
 data_sampled <- getdata(data_with_phone, stratified_sample)
@@ -159,4 +159,5 @@ return_est <- sum(data_sampled2$weights*data_sampled2$phone*data_sampled2$return
 #this is the second estimator, adjusted for the selection bias (ownership of a phone)
 print(return_est) 
 
+#you can now compare the 2 estimators: return_relfreq and return_est
 #you can now compare the 2 estimators: return_relfreq and return_est
