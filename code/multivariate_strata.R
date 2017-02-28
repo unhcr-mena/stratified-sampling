@@ -160,4 +160,3 @@ return_est <- sum(data_sampled2$weights*data_sampled2$phone*data_sampled2$return
 print(return_est) 
 
 #you can now compare the 2 estimators: return_relfreq and return_est
-#you can now compare the 2 estimators: return_relfreq and return_est
