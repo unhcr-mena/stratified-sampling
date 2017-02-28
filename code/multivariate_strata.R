@@ -19,7 +19,7 @@ library(sampling)
 
 #Confirm the the population size called here N
 ## This is the total number of people in the group you are trying to reach with the survey. 
-N <- 10000
+N <- 300000
 
 #  Decide on the confidence level
 #  It represents the probability of the same result if you re-sampled, all other things equal.
@@ -44,7 +44,7 @@ e <- 0.05
 
 #### Mean is the expected value of a variable of interest that is typically continuous 
 #### within a prescribed range for a given population (for instance expenditure per case)
-p <- 0.3
+p <- 0.5
 q <- 1-p
 
 
@@ -55,7 +55,7 @@ q <- 1-p
 
 ## generate randome variables for the test dataset
 size <- sample(x=c(1,2,3,4,5), size=N, replace=TRUE, prob=c(.3,.4,.2,.07,.03))
-return <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(q,p))
+return <- sample(x=c(0,1, NA), size=N, replace=TRUE, prob=c(0.4,p,0.1))
 sex <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.4,.6))
 age <- sample(x=c("15-24", "25-64", "65+"), size=N, replace=TRUE, prob=c(.3,.5,.2))
 region <- sample(x=c("Egypt","Iraq","Jordan","Lebanon"), size=N, replace=TRUE, prob=c(.2,.3,.1,.4))
@@ -155,7 +155,7 @@ write.csv(data_sampled2, "data_sampled2.csv")
 
 #check if the the sample is good by checkin if the proportion of the attribute in the sample is close to its population's counterpart (=p)
 #compute the estimated proportion of the attribute, by weighting 
-return_est <- sum(data_sampled2$weights*data_sampled2$phone*data_sampled2$return)/sum(data_sampled2$weights*data_sampled2$phone)
+return_est <- sum(data_sampled2$weights*data_sampled2$phone*data_sampled2$return, na.rm = TRUE)/sum(data_sampled2$weights*data_sampled2$phone, na.rm = TRUE)
 #this is the second estimator, adjusted for the selection bias (ownership of a phone)
 print(return_est) 
 
