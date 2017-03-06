@@ -96,7 +96,7 @@ phone <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.2,.8))
 ```{r}
 data <- data.frame(size, return, sex, region, needs, phone)
 ```
-# Estimate, through a logistic regression, the probability/propensity score of having a phone given a set of auxiliary variables (sex and age in this case)
+# Estimate, through a logistic regression, the probability/propensity score of having a phone given a set of auxiliary variables known for both respondents and nonrespondents (sex and age in this case)
 ```{r}
 logit_model <- glm(phone ~sex+age,family=binomial(link='logit'),data=data)
 summary(logit_model)
