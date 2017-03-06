@@ -65,7 +65,7 @@ phone <- sample(x=c(0,1), size=N, replace=TRUE, prob=c(.2,.8))
 ## Bind all variable to get our test dataset
 data <- data.frame(size, return, sex, age, region, needs, phone)
 
-# estimate, through a logistic regression, the probability/propensity score of having a phone given a set of auxiliary variables (sex and age in this case)
+# estimate, through a logistic regression, the probability/propensity score of having a phone given a set of auxiliary variable known for both respondents and nonrespondentss (sex and age in this case)
 logit_model <- glm(phone ~sex+age,family=binomial(link='logit'),data=data)
 summary(logit_model)
 #compute the weights as the inverse of the selection probabilites (they will be use in STEP 6)
